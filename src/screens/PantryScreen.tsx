@@ -15,7 +15,7 @@ import { InventoryItemCard } from '../components/InventoryItemCard';
 import { ItemDetailModal } from '../components/ItemDetailModal';
 import { ItemFormModal } from '../components/ItemFormModal';
 import { ProgressSummaryCard } from '../components/ProgressSummaryCard';
-import { useInventory } from '../hooks/useInventory';
+import { useInventory } from '../context/InventoryContext';
 import {
   FilterCategory,
   InventoryItem,
@@ -128,7 +128,9 @@ export const PantryScreen: React.FC = () => {
         <HeaderLogo />
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={Colors.greenPrimary} />
-          <Text style={styles.loadingText}>Loading your pantry inventory...</Text>
+          <Text style={styles.loadingText}>
+            Loading your pantry inventory...
+          </Text>
         </View>
       </View>
     );
@@ -196,7 +198,8 @@ export const PantryScreen: React.FC = () => {
         onPress={handleOpenAddModal}
         activeOpacity={0.85}
         accessibilityLabel="Add new inventory item"
-        testID="fab-add-item">
+        testID="fab-add-item"
+      >
         <Text style={styles.fabIcon}>＋</Text>
       </TouchableOpacity>
 
@@ -222,9 +225,7 @@ export const PantryScreen: React.FC = () => {
       <ItemFormModal
         visible={isFormModalVisible}
         editingItem={editingItem}
-        defaultCategory={
-          selectedCategory === 'All' ? 'Food' : selectedCategory
-        }
+        defaultCategory={selectedCategory === 'All' ? 'Food' : selectedCategory}
         onClose={() => {
           setIsFormModalVisible(false);
           setEditingItem(null);
@@ -277,6 +278,6 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.bold,
     fontSize: 26,
     color: Colors.textOnPrimary,
-    marginTop: -1,
+    marginTop: 4,
   },
 });

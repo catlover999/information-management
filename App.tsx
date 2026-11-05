@@ -1,16 +1,19 @@
 import React from 'react';
 import { StatusBar, StyleSheet } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { InventoryProvider } from './src/context/InventoryContext';
 import { AppNavigator } from './src/navigation/AppNavigator';
 import { Colors } from './src/theme';
 
 function App(): React.JSX.Element {
   return (
     <SafeAreaProvider>
-      <StatusBar barStyle="light-content" />
-      <SafeAreaView style={styles.safeArea} edges={['top']}>
-        <AppNavigator />
-      </SafeAreaView>
+      <InventoryProvider>
+        <StatusBar barStyle="light-content" />
+        <SafeAreaView style={styles.safeArea} edges={['top']}>
+          <AppNavigator />
+        </SafeAreaView>
+      </InventoryProvider>
     </SafeAreaProvider>
   );
 }

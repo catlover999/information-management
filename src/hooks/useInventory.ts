@@ -6,7 +6,24 @@ import {
 import { InventoryStorage } from '../storage/inventoryStorage';
 import { generateUniqueId } from '../utils/idGenerator';
 
-export function useInventory() {
+/**
+ * Pure helper that applies validated AI recognition IDs to an inventory list:
+ * - Items included in `foundItemIds` are marked as `checked: true`.
+ * - All other items are marked as `checked: false`.
+ * - Preserves all names, IDs, categories, locations, expiry dates, notes, and item ordering.
+ */
+export function applyRecognizedIdsToInventory(
+  currentItems: InventoryItem[],
+  foundItemIds: string[],
+): InventoryItem[] {
+  const foundSet = new Set(foundItemIds);
+  return currentItems.map(item => ({
+    ...item,
+    checked: foundSet.has(item.id),
+  }));
+}
+
+export function useInventoryState() {
   const [items, setItems] = useState<InventoryItem[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const isInitialLoadComplete = useRef<boolean>(false);
@@ -120,7 +137,6 @@ export function useInventory() {
       }
 
       setItems(prev => {
-        // If no filter is active or visibleList matches full list, reorder directly
         if (!visibleList || visibleList.length === prev.length) {
           const copy = [...prev];
           const [moved] = copy.splice(fromIndex, 1);
@@ -132,7 +148,6 @@ export function useInventory() {
           return copy;
         }
 
-        // If a category filter is active, reorder within visible subset and map back
         const reorderedVisible = [...visibleList];
         const [movedItem] = reorderedVisible.splice(fromIndex, 1);
         if (!movedItem) {
@@ -158,6 +173,20 @@ export function useInventory() {
     [],
   );
 
+  /**
+   * Updates the inventory checklist based on validated AI recognition item IDs:
+   * - Items included in `foundItemIds` are marked checked.
+   * - All other items are marked unchecked.
+   * - Preserves all metadata and custom item ordering, and saves to AsyncStorage.
+   */
+  const applyRecognizedItems = useCallback((foundItemIds: string[]) => {
+    setItems(prev => {
+      const next = applyRecognizedIdsToInventory(prev, foundItemIds);
+      InventoryStorage.saveInventory(next);
+      return next;
+    });
+  }, []);
+
   const resetToDefault = useCallback(async () => {
     const defaultItems = await InventoryStorage.resetToDefaultSeed();
     setItems(defaultItems);
@@ -171,8 +200,8 @@ export function useInventory() {
     toggleItemChecked,
     deleteItem,
     reorderItems,
+    applyRecognizedItems,
     persistItems,
     resetToDefault,
   };
 }
-
