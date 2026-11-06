@@ -5,35 +5,35 @@ import { InventoryItem } from '../models/inventory';
  * Emergency Plan: https://www.alert.swiss/en/precaution/emergency-plan.html
  */
 export const INITIAL_EMERGENCY_INVENTORY: InventoryItem[] = [
-  // Beverages
+  // Beverages (2 items with full metadata)
   {
     id: 'swiss-emergency-01',
     name: 'At least 9 litres of water per person (3–4 days).',
     category: 'Beverages',
-    location: '',
-    expiryDate: null,
-    notes: '',
-    checked: false,
+    location: 'Basement Pantry Shelf A1',
+    expiryDate: '2028-10-15',
+    notes: '6x 1.5L sealed still mineral water bottles; replenish every 2 years.',
+    checked: true,
   },
   {
     id: 'swiss-emergency-02',
     name: 'Other beverages.',
     category: 'Beverages',
-    location: '',
-    expiryDate: null,
-    notes: '',
-    checked: false,
+    location: 'Kitchen Cupboard Top',
+    expiryDate: '2027-06-30',
+    notes: 'Herbal teas, long-life apple juice, and electrolyte hydration sachets.',
+    checked: true,
   },
 
-  // Food
+  // Food (Items with full metadata)
   {
     id: 'swiss-emergency-03',
     name: 'Rice and/or pasta.',
     category: 'Food',
-    location: '',
-    expiryDate: null,
-    notes: '',
-    checked: false,
+    location: 'Dry Storage Bin #2',
+    expiryDate: '2028-04-20',
+    notes: '3kg Jasmine rice & 2kg durum wheat penne in airtight sealed containers.',
+    checked: true,
   },
   {
     id: 'swiss-emergency-04',
@@ -48,10 +48,10 @@ export const INITIAL_EMERGENCY_INVENTORY: InventoryItem[] = [
     id: 'swiss-emergency-05',
     name: 'Canned food (vegetables, fruit, mushrooms).',
     category: 'Food',
-    location: '',
-    expiryDate: null,
-    notes: '',
-    checked: false,
+    location: 'Pantry Shelf B3',
+    expiryDate: '2027-11-15',
+    notes: '8 cans: sweet corn, diced tomatoes, peeled peaches, and sliced mushrooms.',
+    checked: true,
   },
   {
     id: 'swiss-emergency-06',
@@ -75,10 +75,10 @@ export const INITIAL_EMERGENCY_INVENTORY: InventoryItem[] = [
     id: 'swiss-emergency-08',
     name: 'Ready-made meals (Rösti, instant soups).',
     category: 'Food',
-    location: '',
-    expiryDate: null,
-    notes: '',
-    checked: false,
+    location: 'Pantry Shelf C1',
+    expiryDate: '2027-09-30',
+    notes: '4x Rösti pouches and 6x assorted instant vegetable soups.',
+    checked: true,
   },
   {
     id: 'swiss-emergency-09',
@@ -180,24 +180,24 @@ export const INITIAL_EMERGENCY_INVENTORY: InventoryItem[] = [
     checked: false,
   },
 
-  // Additional supplies
+  // Additional supplies (2 items with full metadata)
   {
     id: 'swiss-emergency-20',
     name: 'Battery-run VHF radio that can receive DAB+ and VHF broadcasts.',
     category: 'Additional supplies',
-    location: '',
-    expiryDate: null,
-    notes: '',
-    checked: false,
+    location: 'Emergency Kit Bag (Hallway)',
+    expiryDate: '2029-01-01',
+    notes: 'Tested reception on 101.5 MHz; includes 4x AA spare alkaline batteries.',
+    checked: true,
   },
   {
     id: 'swiss-emergency-21',
     name: 'Hand-crank torches and spare batteries.',
     category: 'Additional supplies',
-    location: '',
-    expiryDate: null,
-    notes: '',
-    checked: false,
+    location: 'Living Room Sideboard Drawer',
+    expiryDate: '2030-05-15',
+    notes: 'Solar & dynamo rechargeable LED torch with USB emergency phone output.',
+    checked: true,
   },
   {
     id: 'swiss-emergency-22',

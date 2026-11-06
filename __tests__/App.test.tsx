@@ -64,12 +64,19 @@ describe('PantryLens Core Suite', () => {
     expect(food).toHaveLength(17);
     expect(supplies).toHaveLength(5);
 
-    for (const item of INITIAL_EMERGENCY_INVENTORY) {
-      expect(item.location).toBe('');
-      expect(item.expiryDate).toBeNull();
-      expect(item.notes).toBe('');
-      expect(item.checked).toBe(false);
-    }
+    const fullMetadataBeverages = beverages.filter(
+      i => i.location && i.expiryDate && i.notes,
+    );
+    const fullMetadataFood = food.filter(
+      i => i.location && i.expiryDate && i.notes,
+    );
+    const fullMetadataSupplies = supplies.filter(
+      i => i.location && i.expiryDate && i.notes,
+    );
+
+    expect(fullMetadataBeverages.length).toBeGreaterThanOrEqual(2);
+    expect(fullMetadataFood.length).toBeGreaterThanOrEqual(2);
+    expect(fullMetadataSupplies.length).toBeGreaterThanOrEqual(2);
   });
 
   test('InventoryStorage seeds on first launch and preserves user modifications on restart', async () => {

@@ -133,10 +133,12 @@ export const InventoryItemCard: React.FC<InventoryItemCardProps> = ({
             </View>
           ) : null}
 
-          {/* Notes Indicator */}
+          {/* Notes Pill */}
           {hasNotes ? (
             <View style={styles.noteBadge}>
-              <Text style={styles.noteBadgeText}>📝 Note</Text>
+              <Text style={styles.noteBadgeText} numberOfLines={1}>
+                📝 {item.notes}
+              </Text>
             </View>
           ) : null}
         </View>
@@ -246,7 +248,7 @@ const styles = StyleSheet.create({
     borderRadius: BorderRadius.sm,
     borderWidth: 1,
     borderColor: Colors.border,
-    maxWidth: 140,
+    maxWidth: 160,
   },
   locationBadgeText: {
     fontFamily: Fonts.medium,
@@ -282,9 +284,12 @@ const styles = StyleSheet.create({
   },
   noteBadge: {
     backgroundColor: '#F1F5F9',
-    paddingHorizontal: 7,
+    paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: BorderRadius.sm,
+    borderWidth: 1,
+    borderColor: Colors.border,
+    maxWidth: 220,
   },
   noteBadgeText: {
     fontFamily: Fonts.medium,

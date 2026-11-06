@@ -21,8 +21,53 @@ export const InventoryStorage = {
       ]);
 
       if (rawItems !== null) {
-        const parsed = JSON.parse(rawItems);
+        let parsed = JSON.parse(rawItems);
         if (Array.isArray(parsed)) {
+          const seedMap = new Map(
+            INITIAL_EMERGENCY_INVENTORY.map(i => [i.id, i]),
+          );
+
+          // Enrich existing items that lack metadata with full seed metadata
+          let hasChanges = false;
+          parsed = parsed.map((item: InventoryItem) => {
+            const seed = seedMap.get(item.id);
+            if (
+              seed &&
+              (!item.location || !item.expiryDate || !item.notes) &&
+              (seed.location || seed.expiryDate || seed.notes)
+            ) {
+              hasChanges = true;
+              return {
+                ...item,
+                location: item.location || seed.location,
+                expiryDate: item.expiryDate || seed.expiryDate,
+                notes: item.notes || seed.notes,
+                checked: item.checked !== undefined ? item.checked : seed.checked,
+              };
+            }
+            return item;
+          });
+
+          // Ensure Beverages has both Swiss Emergency items if one was missing
+          const existingIds = new Set(parsed.map((i: InventoryItem) => i.id));
+          const beverageItems = parsed.filter(
+            (i: InventoryItem) => i.category === 'Beverages',
+          );
+          if (beverageItems.length < 2 && !existingIds.has('swiss-emergency-01')) {
+            const waterSeed = seedMap.get('swiss-emergency-01');
+            if (waterSeed) {
+              hasChanges = true;
+              parsed.unshift(waterSeed);
+            }
+          }
+
+          if (hasChanges) {
+            await AsyncStorage.setItem(
+              STORAGE_KEYS.INVENTORY_ITEMS,
+              JSON.stringify(parsed),
+            );
+          }
+
           if (!isSeeded) {
             await AsyncStorage.setItem(STORAGE_KEYS.SEED_INITIALIZED, 'true');
           }
