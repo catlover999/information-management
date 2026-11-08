@@ -1,0 +1,25 @@
+FROM docker.io/library/node:22-alpine
+
+WORKDIR /app/web-demo
+
+# 1. Install only the minimal web-demo dependencies with lifecycle scripts disabled
+COPY web-demo/package.json ./package.json
+RUN npm install --ignore-scripts --no-audit --no-fund && npm cache clean --force
+
+# 2. Copy application source & web shims
+WORKDIR /app
+COPY app.json App.tsx index.js ./
+COPY src ./src
+COPY android/app/src/main/assets/index.android.bundle ./android/app/src/main/assets/index.android.bundle
+COPY web-demo ./web-demo
+
+# 3. Verify bundle compilation at build time and set unprivileged ownership
+WORKDIR /app/web-demo
+RUN npx vite build --outDir /tmp/build-check && rm -rf /tmp/build-check /tmp/vite-cache \
+    && chown -R node:node /app
+
+USER node
+WORKDIR /app/web-demo
+
+EXPOSE 8080
+CMD ["./node_modules/.bin/vite", "--configLoader", "native", "--host", "0.0.0.0", "--port", "8080"]
